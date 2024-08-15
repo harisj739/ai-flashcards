@@ -1,7 +1,19 @@
 'use client'
 
 import {useUser} from '@clerk/nextjs'
-import { Typography } from '@mui/material'
+import {
+    Box,
+    Button,
+    Card,
+    CardActionArea,
+    CardContent,
+    Container,
+    Dialog, DialogActions, DialogContent, DialogContentText,
+    DialogTitle,
+    Grid,
+    Paper, TextField,
+    Typography
+} from '@mui/material'
 
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -15,7 +27,7 @@ export default function Generate(){
     const [open, setOpen] = useState(false)
     const router = useRouter()
 
-    const handleSumbit = async() => {
+    const handleSubmit = async() => {
         fetch('api/generate',
                 {
                     method:'POST',
@@ -97,19 +109,19 @@ export default function Generate(){
                 fullWidth
                 multiline
                 rows={4}
-                varaint = "outlined"
+                variant = "outlined"
                 sx={{
                     mb:2,
                 }}
                 />
 
                 <Button 
-                varaint ='contained'  
+                variant ='contained'
                 color='primary' 
-                onClick={handSumbit}
+                onClick={handleSubmit}
                 fullWidth>
                 {' '}
-                Sumbit
+                Submit
                 </Button>
             </Paper>
         </Box>
