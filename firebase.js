@@ -1,25 +1,25 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import {getFirebase} from 'firebase/firestore'
+import {getFirebase, getFirestore, writeBatch} from 'firebase/firestore'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyCmo3LmS6nNFtwy9u6ax2ZthDMl4ocvW6E",
-    authDomain: "ai-chatbot-9f5da.firebaseapp.com",
-    projectId: "ai-chatbot-9f5da",
-    storageBucket: "ai-chatbot-9f5da.appspot.com",
-    messagingSenderId: "664458575826",
-    appId: "1:664458575826:web:56049552f73862694f120b",
-    measurementId: "G-JX4N3V7KGP"
+  apiKey: "AIzaSyD8IQqL25wu3JnuRHcWrAipVdDsjucQRrE",
+  authDomain: "flashcards-ed1ef.firebaseapp.com",
+  projectId: "flashcards-ed1ef",
+  storageBucket: "flashcards-ed1ef.appspot.com",
+  messagingSenderId: "839108592862",
+  appId: "1:839108592862:web:5dd0c6e8c94cb79fdfae4f",
+  measurementId: "G-37RWYX3BXE"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const db = getFirebase(app)
+
+const db = getFirestore(app)
 
 export {db}

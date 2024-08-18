@@ -1,3 +1,4 @@
+'use client'
 import Image from "next/image";
 import getStripe from "@/utils/get-stripe";
 import {SignedIn, SignedOut, UserButton} from "@clerk/nextjs";
@@ -5,6 +6,31 @@ import {AppBar, Box, Button, Container, Grid, Toolbar, Typography} from "@mui/ma
 import Head from "next/head";
 
 export default function Home() {
+
+    const handleSubmit = async () =>{
+        const checkoutSession = await fetch('/api/checkout_session', {
+            method: 'POST',
+            headers: {
+                origin: 'http://localhost:3000',
+            },
+
+        })
+        const checkoutSessionJson = await checkoutSession.json()
+
+        // handles error
+        if (checkoutSession.statusCode === 500){
+            console.error(checkoutSession.message)
+        }
+
+        const stripe = await getStripe()
+        const {error} = await stripe.redirectToCheckout({
+            sessionId: checkoutSessionJson.id
+        })
+
+        if(error){
+            console.warn(error.message)
+        }
+    }
   return (
     <Container maxWidth={"lg"}>
       <Head>
@@ -12,17 +38,19 @@ export default function Home() {
         <meta name={"description"} content={"Create flashcard from your text"} />
       </Head>
 
+{/* Navigation */}
       <AppBar position={"static"}>
-        <Toolbar>
+        <Toolbar>ç
           <Typography variant={"h6"} style={{flexGrow: 1}}>
               Flashcard SaaS
           </Typography>
 
+{/* What you see when signed out */}
           <SignedOut>
             <Button color={"inherit"} href="/sign-in"> Login </Button>
             <Button color={"inherit"} href="/sign-up"> Sign Up </Button>
           </SignedOut>
-
+{/* What you see when signed in */}
           <SignedIn>
             <UserButton />
           </SignedIn>
@@ -36,25 +64,41 @@ export default function Home() {
         }}>
             <Typography variant={"h2"} gutterBottom> Welcome to AI Flashcards! </Typography>
             <Typography variant={"h5"} gutterBottom> The easiest way to make flashcards from your text! </Typography>
-            <Button variant={"contained"} color={"primary"} sx={{mt:2}}> Get Started </Button>
+            <Button variant={"contained"} color={"primary"} to = "generate/route.js" sx={{mt:2}}> Get Started </Button>
         </Box>
-
+{/* Features */}
         <Box sx={{my: 6}}>
             <Typography variant={"h4"} gutterBottom> Features  </Typography>
             <Grid container spacing={4}>
                 <Grid item xs={12} md={4}>
+                    <Box sx={{my: 1, p: 3,
+                        border: '1px solid',
+                        borderColor: "grey.300",
+                        borderRadius: 2} }>
                     <Typography variant={"h6"} gutterBottom> Easy Text Input </Typography>
+                    
                     <Typography> {' '} Simply input your text and let our software do the rest. Creating flashcards has never been easier!</Typography>
+                    </Box>
                 </Grid>
 
                 <Grid item xs={12} md={4}>
+                <Box sx={{my: 1, p: 3,
+                        border: '1px solid',
+                        borderColor: "grey.300",
+                        borderRadius: 2} }>
                     <Typography variant={"h6"} gutterBottom> Smart Flashcards </Typography>
                     <Typography> {' '} Our AI intelligently breaks down your text into concise flashcards, perfect for studying.</Typography>
+                    </Box>
                 </Grid>
 
                 <Grid item xs={12} md={4}>
+                <Box sx={{my: 1, p: 3,
+                        border: '1px solid',
+                        borderColor: "grey.300",
+                        borderRadius: 2} }>
                     <Typography variant={"h6"} gutterBottom> Accessible Anywhere </Typography>
                     <Typography> {' '} Access your flashcards from any device and at any time! Study on the go with ease! </Typography>
+                    </Box>
                 </Grid>
             </Grid>
         </Box>
@@ -86,7 +130,9 @@ export default function Home() {
                         <Typography variant={"h5"} gutterBottom> Pro  </Typography>
                         <Typography variant={"h6"} gutterBottom> $10/month  </Typography>
                         <Typography> {' '} Unlimited flashcards and storage with priority support! </Typography>
-                        <Button variant={"contained"} color="primary" sx={{mt: 2}}> Choose Pro </Button>
+                        <Button variant={"contained"} color="primary" sx={{mt: 2}} onClick={handleSubmit}> 
+                            Choose Pro 
+                        </Button>
                     </Box>
                 </Grid>
             </Grid>
