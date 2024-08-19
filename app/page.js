@@ -4,9 +4,11 @@ import getStripe from "@/utils/get-stripe";
 import {SignedIn, SignedOut, UserButton} from "@clerk/nextjs";
 import {AppBar, Box, Button, Container, Grid, Toolbar, Typography} from "@mui/material";
 import Head from "next/head";
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
 
+    const Router = useRouter()
     const handleSubmit = async () =>{
         const checkoutSession = await fetch('/api/checkout_session', {
             method: 'POST',
@@ -16,6 +18,8 @@ export default function Home() {
 
         })
         const checkoutSessionJson = await checkoutSession.json()
+
+
 
         // handles error
         if (checkoutSession.statusCode === 500){
@@ -30,6 +34,10 @@ export default function Home() {
         if(error){
             console.warn(error.message)
         }
+    }
+
+    const goGenerate = () => {
+        Router.push("generate")
     }
   return (
     <Container maxWidth={"lg"}>
@@ -64,7 +72,7 @@ export default function Home() {
         }}>
             <Typography variant={"h2"} gutterBottom> Welcome to AI Flashcards! </Typography>
             <Typography variant={"h5"} gutterBottom> The easiest way to make flashcards from your text! </Typography>
-            <Button variant={"contained"} color={"primary"} to = "generate/route.js" sx={{mt:2}}> Get Started </Button>
+            <Button variant={"contained"} color={"primary"} onClick = {goGenerate} sx={{mt:2}}> Get Started </Button>
         </Box>
 {/* Features */}
         <Box sx={{my: 6}}>

@@ -86,6 +86,10 @@ export default function Generate(){
         setOpen(false)
     }
 
+    const goHome = () =>{
+        router.push("/")
+    }
+
 
     
 
@@ -139,9 +143,22 @@ export default function Generate(){
 
 
     return <Container maxWidth="md">
-        
 
+        {/* Button that goes home  */}
+        <Box>
+                <Button 
+                variant = 'outlined'
+                color='primary' 
+                onClick={goHome}
+                disabled={loading}
+                >
+                {' '}
+                Home
+                </Button>
+
+        </Box>
         
+        {/* Button that generates flashcards  */}
         <Box sx={{mt:4,mb:6,display:'flex',flexDirection:'column',alignItems:'center',}}>
             <Typography variant='h4'>
                 Generate Flashcards
@@ -169,16 +186,22 @@ export default function Generate(){
                 {' '}
                 Submit
                 </Button>
+
+                
+
             </Paper>
 
          
         </Box>
 
+        {/* Loading Status */}
         {loading && (
                 <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
                     <CircularProgress />
                 </Box>
             )}
+
+            
 
         
         
