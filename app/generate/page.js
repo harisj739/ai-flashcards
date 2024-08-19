@@ -95,45 +95,53 @@ export default function Generate(){
 
 
     // Saves flashcards
-    const saveFlashcards = async()=>{
-        if(!name) {
-            alert('Please enter a name')
-            return
-        }
-
-        const batch = writeBatch(db) // make a batch 
-        const userDocRef = doc(collection(db,'users'),user.id)
-        const docSnap=await getDoc(userDocRef) // gets snapshot 
-
-        if(docSnap.exists()){
-            const collections = docSnap.data().flashcards || []
-            if(collections.find((f)=> f.name === name)){
-                alert('Flashcard collection with the same name already exists.')
-                return
-            }
-            else{
-                collections.push({name})
-                batch.set(userDocRef, {flashcards: collections}, {merge: true}) // merge makes it so u dont overide data 
-            }
-
-
-        }
-
-        else{ // if flashcards dont exist 
-            batch.set(userDocRef, {flashcards: [{name}]})
-        }
-
-        const colRef = collection(userDocRef, name) // name of flashcard
-        flashcards.forEach((flashcard)=> { // for each flashcard
-            const cardDocRef = doc(colRef)
-            batch.set(cardDocRef, flashcard) // batch makes it so you write as a batch not indivudally 
-        })
-
-        await batch.commit()
-        handleClose()
-        router.push('/flashcards')
+// Saves flashcards
+const saveFlashcards = async () => {
+    if (!name) {
+        alert('Please enter a name');
+        return;
     }
 
+    // Ensure user is loaded and authenticated before attempting to access user.id
+    if (!user || !user.id) {
+        console.error('Authentication error: No user logged in.');
+        alert('You must be logged in to save flashcards.');
+        return; // Optionally, redirect to login page or handle error
+    }
+
+    const batch = writeBatch(db);
+    const userDocRef = doc(collection(db, 'users'), user.id);
+
+    try {
+        const docSnap = await getDoc(userDocRef);
+
+        if (docSnap.exists()) {
+            const collections = docSnap.data().flashcards || [];
+            if (collections.find(f => f.name === name)) {
+                alert('Flashcard collection with the same name already exists.');
+                return;
+            } else {
+                collections.push({ name });
+                batch.set(userDocRef, { flashcards: collections }, { merge: true });
+            }
+        } else {
+            batch.set(userDocRef, { flashcards: [{ name }] });
+        }
+
+        const colRef = collection(userDocRef, name);
+        flashcards.forEach((flashcard) => {
+            const cardDocRef = doc(colRef);
+            batch.set(cardDocRef, flashcard);
+        });
+
+        await batch.commit();
+        handleClose();
+        router.push('/flashcards');
+    } catch (error) {
+        console.error('Error saving flashcards:', error);
+        alert('Failed to save flashcards.');
+    }
+};
 
 
 
