@@ -2,14 +2,19 @@
 import Image from "next/image";
 import getStripe from "@/utils/get-stripe";
 import {SignedIn, SignedOut, UserButton} from "@clerk/nextjs";
-import {AppBar, Box, Button, Container, Grid, Toolbar, Typography} from "@mui/material";
+import {AppBar, Box, Button, Container, Drawer, Grid, IconButton, List, ListItem, ListItemText, Toolbar, Typography} from "@mui/material";
 import Head from "next/head";
 import { useRouter } from 'next/navigation';
+import React, { useState } from 'react'
+import MenuIcon from '@mui/icons-material/Menu'
+import Link from "next/link";
+import Layout from './components/appbar'
 
 export default function Home() {
 
     const Router = useRouter()
     const handleSubmit = async () =>{
+
         const checkoutSession = await fetch('/api/checkout_session', {
             method: 'POST',
             headers: {
@@ -36,41 +41,39 @@ export default function Home() {
         }
     }
 
+    // Adding feature to app bar by implementing side bar 
+
+    const menuItems = [
+        { name: 'Home', path: '/' },
+        { name: 'Create Flashcards', path: '/generate' },
+        { name: 'Saved Flashcards', path: '/flashcards' },
+        { name: 'Account', path: '/account' }
+    ];
+
+    const [drawerOpen, setDrawerOpen] = useState(false);
+
+    const toggleDrawer = () =>{
+        setDrawerOpen(!drawerOpen)
+    }
+
     const goGenerate = () => {
         Router.push("generate")
     }
   return (
-    <Container maxWidth={"lg"}>
+
+    <Container maxWidth='false' sx={{minHeight: '120vh', bgcolor: '#202124', color: 'white'}}>
       <Head>
         <title> Flashcard SaaS </title>
         <meta name={"description"} content={"Create flashcard from your text"} />
       </Head>
 
-{/* Navigation */}
-      <AppBar position={"static"}>
-        <Toolbar>ç
-          <Typography variant={"h6"} style={{flexGrow: 1}}>
-              Flashcard SaaS
-          </Typography>
-
-{/* What you see when signed out */}
-          <SignedOut>
-            <Button color={"inherit"} href="/sign-in"> Login </Button>
-            <Button color={"inherit"} href="/sign-up"> Sign Up </Button>
-          </SignedOut>
-{/* What you see when signed in */}
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-
-        </Toolbar>
-      </AppBar>
-
+{/* APPBAR */}
+<Layout></Layout>
         <Box sx={{
             textAlign: "center",
             my: 4
         }}>
-            <Typography variant={"h2"} gutterBottom> Welcome to AI Flashcards! </Typography>
+            <Typography variant={"h2"} gutterBottom> Welcome to FlashyAI! </Typography>
             <Typography variant={"h5"} gutterBottom> The easiest way to make flashcards from your text! </Typography>
             <Button variant={"contained"} color={"primary"} onClick = {goGenerate} sx={{mt:2}}> Get Started </Button>
         </Box>

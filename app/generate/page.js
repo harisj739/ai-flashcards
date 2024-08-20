@@ -29,6 +29,8 @@ import {
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+import Layout from '../components/appbar'
+
 
 export default function Generate(){
     const {isLoaded, isSignedIn, user} = useUser()
@@ -150,28 +152,18 @@ const saveFlashcards = async () => {
 
 
 
-    return <Container maxWidth="md">
+    return <Container maxWidth="false" sx={{ minHeight: '100vh', bgcolor: '#202124', color: 'white'}}>
 
+        <Layout></Layout>
         {/* Button that goes home  */}
-        <Box>
-                <Button 
-                variant = 'outlined'
-                color='primary' 
-                onClick={goHome}
-                disabled={loading}
-                >
-                {' '}
-                Home
-                </Button>
 
-        </Box>
         
         {/* Button that generates flashcards  */}
         <Box sx={{mt:4,mb:6,display:'flex',flexDirection:'column',alignItems:'center',}}>
             <Typography variant='h4'>
                 Generate Flashcards
             </Typography>
-            <Paper sx={{p: 4, width: '100%'}}>
+            <Paper sx={{p: 4, width: '100%', bgcolor: '#202124', border: 1, borderColor: 'white'}}>
                 <TextField value={text}
                 onChange={(e) => setText(e.target.value)} 
                 label ="Enter text"

@@ -6,6 +6,7 @@ import {db} from '@/firebase'
 import { useRouter } from 'next/navigation'
 import { Router } from 'next/router'
 import { CardActionArea, Grid, Container, CardContent, Typography, Card} from '@mui/material'
+import Layout from '../components/appbar'
 
 // Shows all stored flashcards from database
 export default function Flashcards(){
@@ -43,7 +44,8 @@ export default function Flashcards(){
     }
 
     // Display flashcards
-    return(<Container maxWidth = "100wv">
+    return(<Container maxWidth = "100wv" sx={{ minHeight: '100vh', bgcolor: '#202124', color: 'white'}}>
+        <Layout></Layout>
         <Grid container spacing = {3} sx={{
             mt: 4
         }}>
@@ -54,7 +56,7 @@ export default function Flashcards(){
                          onClick={()=> {
                             handleCardClick(flashcard.name)
                          }}>
-                            <CardContent>
+                            <CardContent> 
                                 <Typography variant='h6'>
                                     {flashcard.name}
 

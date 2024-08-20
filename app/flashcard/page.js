@@ -20,6 +20,7 @@ import {
 } from '@mui/material'
 
 import { useSearchParams } from "next/navigation" // find id from search parameter
+import Layout from "../components/appbar"
 
 export default function Flashcard(){
     const {isLoaded, isSignedIn, user} = useUser()
@@ -28,6 +29,7 @@ export default function Flashcard(){
 
     const searchParams = useSearchParams()
     const search = searchParams.get('id') // gets id of page
+
 
     useEffect(()=>{
         async function getFlashcard(){
@@ -60,7 +62,14 @@ export default function Flashcard(){
     }
 
     return(
-        <Container maxWidth = "100vw">
+
+       
+        
+        <Container maxWidth = "100vw" sx = {{minHeight: '120vh', bgcolor: '#202124', color: 'white'}}>
+
+             <Layout>
+             </Layout>
+            
             <Grid container spacing = {3} sx={{mt: 4}}>
 
                         {flashcards.map((flashcard, index) => (
@@ -68,9 +77,11 @@ export default function Flashcard(){
                                 <Card>
                                     <CardActionArea onClick={() => handleCardClick(index)}>
                                         {/* Card Animation  */}
-                                        <CardContent>
+                                        <CardContent sx = {{bgcolor: '#202124'}}>
                                             <Box
                                                 sx={{
+
+                                                    bgcolor: '#3b3d42', color: 'white',
                                                     perspective: '1000px',
                                                  
                                                         transition: 'transform 0.6s',
@@ -98,7 +109,7 @@ export default function Flashcard(){
                                                 }}
                                             >
                                                 <div>
-                                                    <Typography variant="h5" component="div">
+                                                    <Typography variant="h5" component="div" >
                                                         {flashcard.front}
                                                     </Typography>
                                                 </div>
