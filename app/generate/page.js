@@ -173,6 +173,7 @@ const saveFlashcards = async () => {
                 variant = "outlined"
                 sx={{
                     mb:2,
+                    
                 }}
                 />
 
@@ -212,8 +213,8 @@ const saveFlashcards = async () => {
                     <Grid container spacing={3}>
                         {flashcards.map((flashcard, index) => (
                             <Grid item xs={12} sm={6} md={4} key={index}>
-                                <Card>
-                                    <CardActionArea onClick={() => handleCardClick(index)}>
+                                <Card sx={{bgcolor: "#202124"}}>
+                                    <CardActionArea sx={{bgcolor: "#fffff0"}} onClick={() => handleCardClick(index)}>
                                         {/* Card Animation  */}
                                         <CardContent>
                                             <Box
